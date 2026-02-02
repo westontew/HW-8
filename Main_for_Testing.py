@@ -52,4 +52,4 @@ def MethodOfJoints( input_geometry):
     Plotting_Method_of_Joints.PlotStructureData(nodes,bars,"index")
 
 # Run the plane truss function 
-MethodOfJoints('Example_3_2.csv')
+MethodOfJoints('Example_3_3.csv')
