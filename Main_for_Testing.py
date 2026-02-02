@@ -25,11 +25,31 @@ def MethodOfJoints( input_geometry):
     if not StaticallyDeterminate(nodes,bars):
         sys.exit("Cannot operate on a truss that is not statically determinate")
     
-    # Compute reaction forces at the supports from external loads
+     # Compute reaction forces at the supports from external loads
     ComputeReactions(nodes)
     
-    return [nodes,bars]
-        
+    #Check that correct reaction forces are computed
+    for node in nodes:
+        #supports load in the x direction
+        if 0 in node.ConstraintType():
+            print("Reaction in x at node %d is %f." % (node.idx, node.xforce_reaction))
+        #supports load in the y direction
+        if 1 in node.ConstraintType():
+            print("Reaction in y at node %d is %f." % (node.idx, node.yforce_reaction))
+    
+    
+    # Iterate through all bars using the method of joints
+    # to compute internal member loads
+    IterateUsingMethodOfJoints(nodes,bars)
+    
+    # output computed forces in bars
+    for bar in bars:
+        val = round(bar.axial_load,2)
+        print(bar.idx,val)
+
+    # plotting functionality to visualize indices
+    # see the problem statement for how to plot alternative information
+    Plotting_Method_of_Joints.PlotStructureData(nodes,bars,"index")
 
 # Run the plane truss function 
-# MethodOfJoints('Example_3_3.csv')
+MethodOfJoints('Example_3_2.csv')
